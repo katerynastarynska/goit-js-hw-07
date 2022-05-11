@@ -8,9 +8,9 @@ const itemsMarkUp = galleryItems.map((item) => {
         `<div class="gallery__item">
             <a class="gallery__link" href="">
                 <img class="gallery__image"
-                src=${item.preview} 
+                src="${item.preview}" 
                 data-source="${item.original}"
-                alt=${item.description}/>
+                alt="${item.description}"/>
             </a>
         </div>`
     )
@@ -24,10 +24,10 @@ function onImageClick(event) {
     const instance = basicLightbox.create(`
     <img src=${event.target.dataset.source} width="800" height="600">`)
     instance.show();
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            instance.close();
-        }
-    });
-}
+document.addEventListener('keydown', onEscapeModalClose);
 
+function onEscapeModalClose(event) {
+    if (event.code === "Escape") {
+        instance.close();
+    }
+}}
