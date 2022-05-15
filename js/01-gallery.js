@@ -20,14 +20,24 @@ const itemsMarkUp = galleryItems.map((item) => {
 gallery.addEventListener('click', onImageClick);
 
 function onImageClick(event) {
-    event.preventDefault();
-    const instance = basicLightbox.create(`
-    <img src=${event.target.dataset.source} width="800" height="600">`)
-    instance.show();
-document.addEventListener('keydown', onEscapeModalClose);
-
-function onEscapeModalClose(event) {
-    if (event.code === "Escape") {
-        instance.close();
+    if (event.target.tagName !== "IMG") {
+        return;
     }
-}}
+    event.preventDefault();
+
+    const instance = basicLightbox.create(`
+    <img src=${event.target.dataset.source} width="800" height="600">`, {
+        onShow: () => {
+            window.addEventListener('keydown', onEscapeModalClose)
+        },
+        onClose: () => {
+            window.removeEventListener('keydown', onEscapeModalClose)
+        },
+    })
+    const onEscapeModalClose = event => {
+        if (event.code === "Escape") {
+            instance.close();
+        }
+    }
+    instance.show();
+}
